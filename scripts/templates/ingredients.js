@@ -1,6 +1,6 @@
 export function ingredientsTemplate(data) {
     const { ingredient, quantity, unit } = data;
-
+    console.log(data)
     function getIngredientDOM() {
         const h1 = document.createElement('h1');
         h1.textContent = ingredient;
@@ -13,6 +13,7 @@ export function ingredientsTemplate(data) {
         link.appendChild(h2);
         link.appendChild(h3);
     }
+    console.log(getIngredientDOM())
 
     return { getIngredientDOM };
 }

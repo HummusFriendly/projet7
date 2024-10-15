@@ -1,11 +1,9 @@
-import { recipeTemplate } from ".recipes.js";
-
-let recipes = [];
+import { recipeTemplate } from "../templates/recipes.js";
 
 async function getDataJson() {
-    const response = await fetch('./data/recipes.json');
-    recipes = (await response.json()).recipes;
-    init();
+    const response = await fetch('../../data/recipes.json',  { mode: "cors" });
+    const data = await response.json()
+    return data.recipes
 }
 
 async function displayData(recipes) {
@@ -13,8 +11,8 @@ async function displayData(recipes) {
     recipeSection.innerHTML = '';
 
     recipes.forEach((recipe) => {
-        const recipesIndi = photographerTemplate(recipe);
-        const userCardDOM = recipesIndi.getUserCardDOM();
+        const recipesIndi = recipeTemplate(recipe);
+        const userCardDOM = recipesIndi.getRecipe()
         recipeSection.appendChild(userCardDOM);
     });
 }
@@ -22,6 +20,7 @@ async function displayData(recipes) {
 async function init() {
     const recipes = await getDataJson();
     displayData(recipes);
+    console.log(recipes)
 }
 
 init();
