@@ -1,3 +1,5 @@
+import { recipeTemplate } from ".recipes.js";
+
 let recipes = [];
 
 async function getDataJson() {
@@ -6,13 +8,20 @@ async function getDataJson() {
     init();
 }
 
-function displayData(recipes) {
+async function displayData(recipes) {
     const recipeSection = document.getElementById('cards');
     recipeSection.innerHTML = '';
+
+    recipes.forEach((recipe) => {
+        const recipesIndi = photographerTemplate(recipe);
+        const userCardDOM = recipesIndi.getUserCardDOM();
+        recipeSection.appendChild(userCardDOM);
+    });
 }
 
-function init() {
+async function init() {
+    const recipes = await getDataJson();
     displayData(recipes);
 }
 
-getDataJson();
+init();
