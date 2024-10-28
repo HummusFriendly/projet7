@@ -8,7 +8,6 @@ export class Recipe {
         this.time = data.time;
     }
 
-    // Méthode pour obtenir le HTML d'une recette
     getHtml = () => {
         const div = document.createElement('div');
         div.classList.add('maincards');
@@ -26,7 +25,6 @@ export class Recipe {
         return div;
     }
 
-    // Méthode pour créer la partie des titres
     titlesDiv = () => {
         const divTitle = document.createElement('div');
         const h1 = document.createElement('h1');
@@ -45,7 +43,6 @@ export class Recipe {
         return divTitle;
     }
 
-    // Méthode pour créer la partie image
     imageDiv = () => {
         const imageWrapper = document.createElement('div');
         imageWrapper.classList.add('image-wrapper');
@@ -65,7 +62,6 @@ export class Recipe {
         return imageWrapper;
     }
 
-    // Méthode pour créer la partie ingrédients
     getIngredient = () => {
         const div = document.createElement('div');
         div.classList.add("ingredientsFlex");
@@ -95,17 +91,15 @@ export class Recipe {
         return div;
     }
 
-    // Méthode pour afficher les recettes filtrées
     displayRecipes = (recipes) => {
         const recipesContainer = document.querySelector('.plats');
     
-        // Vérifier si recipesContainer existe
         if (!recipesContainer) {
             console.error("L'élément avec la classe '.plats' n'a pas été trouvé.");
-            return; // Sortir de la fonction si l'élément n'est pas trouvé
+            return; 
         }
     
-        recipesContainer.innerHTML = ''; // Vider le conteneur des recettes actuelles
+        recipesContainer.innerHTML = ''; 
     
         if (recipes.length === 0) {
             recipesContainer.innerHTML = '';
@@ -113,17 +107,15 @@ export class Recipe {
         }
     
         recipes.forEach(recipeData => {
-            const recipe = new Recipe(recipeData); // Créer une instance de la classe Recipe
-            const recipeElement = recipe.getHtml(); // Obtenir l'élément HTML
-            recipesContainer.appendChild(recipeElement); // Ajouter la recette au DOM
+            const recipe = new Recipe(recipeData); 
+            const recipeElement = recipe.getHtml(); 
+            recipesContainer.appendChild(recipeElement); 
         });
     }
 
-    // Méthode pour filtrer les recettes par nom ou ingrédients
     filterRecipes = (searchTerm, recipes) => {
-        const searchLowerCase = searchTerm.toLowerCase(); // Convertir la recherche en minuscules
+        const searchLowerCase = searchTerm.toLowerCase(); 
 
-        // Filtrer les recettes selon leur nom ou les ingrédients
         const filteredRecipes = recipes.filter(recipe => {
             const nameMatch = recipe.name.toLowerCase().includes(searchLowerCase);
             const ingredientsMatch = recipe.ingredients.some(ingredient =>
@@ -132,21 +124,18 @@ export class Recipe {
             return nameMatch || ingredientsMatch;
         });
 
-        this.displayRecipes(filteredRecipes); // Afficher les recettes filtrées
+        this.displayRecipes(filteredRecipes); 
     }
 
-    // Méthode pour initialiser la recherche
     initSearch = (recipesData) => {
         const inputField = document.querySelector('.lookingfor_input');
 
         inputField.addEventListener('input', () => {
             const searchTerm = inputField.value;
 
-            // Si l'utilisateur a tapé au moins 3 lettres, on filtre les recettes
             if (searchTerm.length >= 3) {
                 this.filterRecipes(searchTerm, recipesData);
             } else {
-                // Si moins de 3 lettres, afficher toutes les recettes
                 this.displayRecipes(recipesData);
             }
         });
