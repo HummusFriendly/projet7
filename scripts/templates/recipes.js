@@ -6,7 +6,7 @@ export class Recipe {
         this.description = data.description;
         this.ingredients = data.ingredients;
         this.time = data.time;
-        this.count = data.count;
+        // this.count = data.count;
     }
 
     updateRecipeCount = (count) => {
@@ -104,31 +104,58 @@ export class Recipe {
 
     displayIngredientsList = (recipes) => {
         const ingredButton = document.querySelector('.ingredButton');
-        const allIngredients = new Set();
+        const allIngredients = Array.from(new Set(
+            recipes.flatMap(recipe => recipe.ingredients.map(ing => ing.ingredient.toLowerCase()))
+        ));
     
-        recipes.forEach(recipe => {
-            recipe.ingredients.forEach(ingredient => {
-                allIngredients.add(ingredient.ingredient.toLowerCase());
+        const ingredientsContainer = document.createElement('div');
+        ingredientsContainer.classList.add('ingredients-container');
+        ingredientsContainer.style.display = 'none';
+    
+        const searchInput = document.createElement('input');
+        searchInput.classList.add('ingredient-search');
+        searchInput.placeholder = 'Chercher un ingrédient...';
+        ingredientsContainer.appendChild(searchInput);
+    
+        const ingredientListDiv = document.createElement('div');
+        allIngredients.forEach(ingredient => {
+            const ingredientDiv = document.createElement('div');
+            ingredientDiv.classList.add('ingredient-item');
+            ingredientDiv.textContent = ingredient;
+    
+            ingredientDiv.addEventListener('click', () => {
+                this.filterRecipes(ingredient, recipes);
+                ingredientsContainer.style.display = 'none';
             });
+    
+            ingredientListDiv.appendChild(ingredientDiv);
         });
     
-        ingredButton.addEventListener('click', () => {
-            const ingredientsContainer = document.createElement('div');
-            ingredientsContainer.classList.add('ingredients-container');
+        ingredientsContainer.appendChild(ingredientListDiv);
+        ingredButton.appendChild(ingredientsContainer);
     
-            allIngredients.forEach(ingredient => {
-                const ingredientDiv = document.createElement('div');
-                ingredientDiv.classList.add('ingredient-item');
-                ingredientDiv.textContent = ingredient;
+        ingredButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            ingredientsContainer.style.display = 
+                ingredientsContainer.style.display === 'none' ? 'block' : 'none';
+        });
     
-                ingredientDiv.addEventListener('click', () => {
-                    this.filterRecipes(ingredient, recipes);
-                });
+        ingredientsContainer.addEventListener('mouseover', () => {
+            ingredientsContainer.style.display = 'block';
+        });
     
-                ingredientsContainer.appendChild(ingredientDiv);
+        document.addEventListener('click', (e) => {
+            if (!ingredButton.contains(e.target)) {
+                ingredientsContainer.style.display = 'none';
+            }
+        });
+    
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            Array.from(ingredientListDiv.children).forEach(ingredientDiv => {
+                ingredientDiv.style.display = 
+                    ingredientDiv.textContent.includes(searchTerm) ? 'block' : 'none';
             });
-    
-            document.body.appendChild(ingredientsContainer);
         });
     }
     

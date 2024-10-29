@@ -20,7 +20,7 @@ h2 {
 }
 
 h3 {
-    font-size: 16.5px;
+    font-size: 14.9px;
     overflow: hidden;
     max-height: 75px;
 }
@@ -154,12 +154,6 @@ p {
     font-weight: bold;
 }
 
-.allButtonClass {
-    display: flex;
-    gap: 20px;
-    
-}
-
 .numberbutton {
     font-size: 1.2em;
     font-weight: bold;
@@ -167,5 +161,68 @@ p {
     padding: 10px 15px;
     border-radius: 5px;
     text-align: center;
-    margin-left: 67%;
+    margin-left: 36%;
+}
+
+.ingredients-container {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-height: 330px; 
+    overflow-y: clip;
+    width: 200px; 
+    padding: 10px;
+    z-index: 1000;
+    margin-top: 29%;
+    border-radius: 10px;
+}
+
+.ingredient-item {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#allButton {
+    display: flex;
+    gap: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.ingredButton, .appardButton, .ustenButton {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.ingredButton, .appardButton, .ustenButton div:hover {
+    background-color: white;
+}
+
+.ingredButton, .appardButton, .ustenButton {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;       
+    margin-top: 10px;
+}
+
+.ingredButton, .appardButton, .ustenButton {
+    margin-left: 60px;
+}
+
+.ingredButton img, .appardButton img, .ustenButton img {
+    margin-left: 10px;
+}
+
+.ingredButton, .appardButton, .ustenButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 150px;
 }
