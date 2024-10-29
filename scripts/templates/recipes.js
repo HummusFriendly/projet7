@@ -6,6 +6,17 @@ export class Recipe {
         this.description = data.description;
         this.ingredients = data.ingredients;
         this.time = data.time;
+        this.count = data.count;
+    }
+
+    updateRecipeCount = (count) => {
+        const numberButton = document.querySelector('.numberbutton');
+        if (numberButton) {
+            numberButton.innerHTML = `${count} RECETTES`;
+            console.log(`Nombre de recettes mis à jour : ${count} RECETTES`);
+        } else {
+            console.error("L'élément .numberbutton n'a pas été trouvé dans le DOM.");
+        }
     }
 
     getHtml = () => {
@@ -91,26 +102,60 @@ export class Recipe {
         return div;
     }
 
-    displayRecipes = (recipes) => {
-        const recipesContainer = document.querySelector('.plats');
+    displayIngredientsList = (recipes) => {
+        const ingredButton = document.querySelector('.ingredButton');
+        const allIngredients = new Set();
     
+        recipes.forEach(recipe => {
+            recipe.ingredients.forEach(ingredient => {
+                allIngredients.add(ingredient.ingredient.toLowerCase());
+            });
+        });
+    
+        ingredButton.addEventListener('click', () => {
+            const ingredientsContainer = document.createElement('div');
+            ingredientsContainer.classList.add('ingredients-container');
+    
+            allIngredients.forEach(ingredient => {
+                const ingredientDiv = document.createElement('div');
+                ingredientDiv.classList.add('ingredient-item');
+                ingredientDiv.textContent = ingredient;
+    
+                ingredientDiv.addEventListener('click', () => {
+                    this.filterRecipes(ingredient, recipes);
+                });
+    
+                ingredientsContainer.appendChild(ingredientDiv);
+            });
+    
+            document.body.appendChild(ingredientsContainer);
+        });
+    }
+    
+    displayRecipes = (recipes) => {
+
+        console.log(`Nombre de recettes à afficher : ${recipes.length}`);
+        const recipesContainer = document.querySelector('.plats');
+        
         if (!recipesContainer) {
             console.error("L'élément avec la classe '.plats' n'a pas été trouvé.");
-            return; 
+            return;
         }
     
         recipesContainer.innerHTML = ''; 
     
         if (recipes.length === 0) {
             recipesContainer.innerHTML = '';
-            return;
         }
     
         recipes.forEach(recipeData => {
-            const recipe = new Recipe(recipeData); 
-            const recipeElement = recipe.getHtml(); 
-            recipesContainer.appendChild(recipeElement); 
+            const recipe = new Recipe(recipeData);
+            const recipeElement = recipe.getHtml();
+            recipesContainer.appendChild(recipeElement);
         });
+    
+        this.updateRecipeCount(recipes.length);
+        console.log(`Nombre de recettes affichées : ${recipes.length}`);
     }
 
     filterRecipes = (searchTerm, recipes) => {
@@ -126,6 +171,7 @@ export class Recipe {
 
         this.displayRecipes(filteredRecipes); 
     }
+    
 
     initSearch = (recipesData) => {
         const inputField = document.querySelector('.lookingfor_input');

@@ -11,12 +11,15 @@ async function getDataJson() {
 
 function displayData(recipes) {
     const recipesContainer = document.querySelector('.plats'); 
-    recipesContainer.innerHTML = ''; /
+    recipesContainer.innerHTML = ''; 
 
     recipes.forEach((recipeData) => {
         const recipe = new Recipe(recipeData);
         recipesContainer.appendChild(recipe.getHtml()); 
     });
+
+    const recipeInstance = new Recipe({});
+    recipeInstance.updateRecipeCount(recipes.length); 
 }
 
 async function init() {
@@ -25,8 +28,8 @@ async function init() {
 
     const recipeClassInstance = new Recipe({}); 
     recipeClassInstance.initSearch(recipesData); 
+    recipeClassInstance.displayIngredientsList(recipesData);
 }
 
 init();
-
 
