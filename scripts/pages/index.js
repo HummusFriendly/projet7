@@ -29,6 +29,7 @@ async function init() {
     const recipeClassInstance = new Recipe({}); 
     recipeClassInstance.initSearch(recipesData); 
     recipeClassInstance.displayIngredientsList(recipesData);
+    recipeClassInstance.displayApparList(recipesData);
 }
 
 init();

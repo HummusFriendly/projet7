@@ -6,6 +6,7 @@ export class Recipe {
         this.description = data.description;
         this.ingredients = data.ingredients;
         this.time = data.time;
+        this.appliance = data.appliance;
         // this.count = data.count;
     }
 
@@ -13,9 +14,8 @@ export class Recipe {
         const numberButton = document.querySelector('.numberbutton');
         if (numberButton) {
             numberButton.innerHTML = `${count} RECETTES`;
-            console.log(`Nombre de recettes mis à jour : ${count} RECETTES`);
         } else {
-            console.error("L'élément .numberbutton n'a pas été trouvé dans le DOM.");
+            console.error("error");
         }
     }
 
@@ -158,14 +158,75 @@ export class Recipe {
             });
         });
     }
+
+    displayApparList = (recipes) => {
+        const appardButton = document.querySelector('.appardButton');
+        
+        // Créer une liste unique d'appareils en minuscules
+        const allAppar = Array.from(new Set(
+            recipes
+                .map(recipe => recipe.appliance && recipe.appliance.toLowerCase())
+                .filter(app => app) // filtre pour éviter les valeurs nulles ou indéfinies
+        ));
+    
+        const appardContainer = document.createElement('div');
+        appardContainer.classList.add('ingredients-container');
+        appardContainer.style.display = 'none';
+    
+        const searchInput = document.createElement('input');
+        searchInput.classList.add('ingredient-search');
+        searchInput.placeholder = 'Chercher un appareil...';
+        appardContainer.appendChild(searchInput);
+    
+        const appardListDiv = document.createElement('div');
+        allAppar.forEach(appliance => {
+            const appardDiv = document.createElement('div');
+            appardDiv.classList.add('ingredient-item');
+            appardDiv.textContent = appliance;
+    
+            appardDiv.addEventListener('click', () => {
+                this.filterRecipes(appliance, recipes);
+                appardContainer.style.display = 'none';
+            });
+    
+            appardListDiv.appendChild(appardDiv);
+        });
+    
+        appardContainer.appendChild(appardListDiv);
+        appardButton.appendChild(appardContainer);
+    
+        appardButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            appardContainer.style.display = 
+                appardContainer.style.display === 'none' ? 'block' : 'none';
+        });
+    
+        appardContainer.addEventListener('mouseover', () => {
+            appardContainer.style.display = 'block';
+        });
+    
+        document.addEventListener('click', (e) => {
+            if (!appardButton.contains(e.target)) {
+                appardContainer.style.display = 'none';
+            }
+        });
+    
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            Array.from(appardListDiv.children).forEach(appardDiv => {
+                appardDiv.style.display = 
+                    appardDiv.textContent.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+    }
+    
     
     displayRecipes = (recipes) => {
 
-        console.log(`Nombre de recettes à afficher : ${recipes.length}`);
         const recipesContainer = document.querySelector('.plats');
         
         if (!recipesContainer) {
-            console.error("L'élément avec la classe '.plats' n'a pas été trouvé.");
+            console.error("'.plats' n'a pas été trouvé.");
             return;
         }
     
@@ -182,7 +243,6 @@ export class Recipe {
         });
     
         this.updateRecipeCount(recipes.length);
-        console.log(`Nombre de recettes affichées : ${recipes.length}`);
     }
 
     filterRecipes = (searchTerm, recipes) => {
