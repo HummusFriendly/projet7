@@ -30,6 +30,7 @@ async function init() {
     recipeClassInstance.initSearch(recipesData); 
     recipeClassInstance.displayIngredientsList(recipesData);
     recipeClassInstance.displayApparList(recipesData);
+    recipeClassInstance.displayUstenList(recipesData);
 }
 
 init();
