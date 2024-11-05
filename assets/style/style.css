@@ -171,10 +171,10 @@ p {
 
 #allButton {
     display: flex;
-    gap: 10px;
+    gap: 50px;
     border-radius: 8px;
     margin-top: 20px;
-    margin-left: 30px;
+    margin-left: 70px;
 }
 
 .anthoImg {
@@ -208,7 +208,7 @@ p {
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-    width: 200px;
+    width: 150px;
     box-sizing: border-box;
 }
 
@@ -234,4 +234,8 @@ p {
     background-color: #FFD15B; 
     color: black; 
     border-radius: 3px; 
+}
+
+.ingredient-search {
+    width: 100%;
 }

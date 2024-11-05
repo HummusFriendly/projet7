@@ -108,6 +108,7 @@ export class Recipe {
 
     displayIngredientsList = (recipes) => {
         const ingredButton = document.querySelector('.ingredButton');
+        const ingredImage = ingredButton.querySelector('img');
         const allIngredients = Array.from(new Set(
             recipes.flatMap(recipe => recipe.ingredients.map(ing => ing.ingredient.toLowerCase()))
         ));
@@ -118,7 +119,7 @@ export class Recipe {
 
         const searchInput = document.createElement('input');
         searchInput.classList.add('ingredient-search');
-        searchInput.placeholder = 'Chercher un ingrédient...';
+        searchInput.placeholder = '';
         ingredientsContainer.appendChild(searchInput);
 
         const ingredientListDiv = document.createElement('div');
@@ -142,13 +143,18 @@ export class Recipe {
         ingredButton.appendChild(ingredientsContainer);
 
         ingredButton.addEventListener('click', (e) => {
+
             e.stopPropagation(); 
             ingredientsContainer.style.display = ingredientsContainer.style.display === 'none' ? 'block' : 'none';
+            const imagePathV = './assets/image/v.jpg';
+            const imagePathCaret = './assets/image/^.jpg';
+            ingredImage.src = ingredImage.src.endsWith('v.jpg') ? imagePathCaret : imagePathV;
         });
 
         document.addEventListener('click', (e) => {
             if (!ingredButton.contains(e.target)) {
                 ingredientsContainer.style.display = 'none';
+                ingredImage.src = './assets/image/v.jpg';
             }
         });
 
@@ -163,6 +169,7 @@ export class Recipe {
 
     displayApparList = (recipes) => {
         const appardButton = document.querySelector('.appardButton');
+        const appardImage = appardButton.querySelector('img');
 
         const allAppar = Array.from(new Set(
             recipes
@@ -176,7 +183,7 @@ export class Recipe {
 
         const searchInput = document.createElement('input');
         searchInput.classList.add('ingredient-search');
-        searchInput.placeholder = 'Chercher un appareil...';
+        searchInput.placeholder = '';
         appardContainer.appendChild(searchInput);
 
         const appardListDiv = document.createElement('div');
@@ -203,11 +210,15 @@ export class Recipe {
             e.stopPropagation();
             appardContainer.style.display =
                 appardContainer.style.display = appardContainer.style.display === 'none' ? 'block' : 'none';
+                const imagePathV = './assets/image/v.jpg';
+                const imagePathCaret = './assets/image/^.jpg';
+                appardImage.src = appardImage.src.endsWith('v.jpg') ? imagePathCaret : imagePathV;
         });
 
         document.addEventListener('click', (e) => {
             if (!appardButton.contains(e.target)) {
                 appardContainer.style.display = 'none';
+                appardImage.src = './assets/image/v.jpg';
             }
         });
 
@@ -222,6 +233,7 @@ export class Recipe {
 
     displayUstenList = (recipes) => {
         const ustenButton = document.querySelector('.ustenButton');
+        const ustenImage = ustenButton.querySelector('img');
 
         const allUstensils = Array.from(new Set(
             recipes.flatMap(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase()))
@@ -233,7 +245,7 @@ export class Recipe {
 
         const searchInput = document.createElement('input');
         searchInput.classList.add('ingredient-search');
-        searchInput.placeholder = 'Chercher un ustensile...';
+        searchInput.placeholder = '';
         ustenContainer.appendChild(searchInput);
 
         const ustenListDiv = document.createElement('div');
@@ -260,6 +272,9 @@ export class Recipe {
             e.stopPropagation();
             ustenContainer.style.display =
                 ustenContainer.style.display = ustenContainer.style.display === 'none' ? 'block' : 'none';
+                const imagePathV = './assets/image/v.jpg';
+                const imagePathCaret = './assets/image/^.jpg';
+                ustenImage.src = ustenImage.src.endsWith('v.jpg') ? imagePathCaret : imagePathV;
         });
 
         ustenContainer.addEventListener('mouseover', () => {
@@ -280,8 +295,6 @@ export class Recipe {
             });
         });
     }
-
-
 
     displayRecipes = (recipes) => {
         const recipesContainer = document.querySelector('.plats');
