@@ -8,7 +8,7 @@ export class Recipe {
         this.time = data.time;
         this.appliance = data.appliance;
         this.ustensils = data.ustensils;
-        this.recipesData = data.recipesData || [];
+
         this.activeIngredientFilters = [];
         this.activeApplianceFilters = [];
         this.activeUstensilFilters = [];
@@ -31,6 +31,7 @@ export class Recipe {
                 const index = filterArray.indexOf(keyword);
                 if (index !== -1) {
                     filterArray.splice(index, 1);
+                    console.log("ici", filterArray)
 
                     console.log("Keyword removed:", keyword); 
                     console.log("Current ingredient filters:", this.activeIngredientFilters);
@@ -340,31 +341,31 @@ export class Recipe {
     displayRecipes = (recipes) => {
         const recipesContainer = document.querySelector('.plats');
 
-        if (!recipesContainer) {
-            console.error("'.plats' n'a pas été trouvé.");
-            return;
-        }
+        // if (!recipesContainer) {
+        //     console.error("'.plats' n'a pas été trouvé.");
+        //     return;
+        // }
 
         recipesContainer.innerHTML = '';
 
-        if (recipes.length === 0) {
+        // if (recipes.length === 0) {
 
-            const noResultsImage = document.createElement('img');
-            noResultsImage.setAttribute('src', 'assets/image/anthony.jpg');
-            noResultsImage.setAttribute('alt', 'Aucune recette trouvée');
-            noResultsImage.classList.add('anthoImg');
+        //     const noResultsImage = document.createElement('img');
+        //     noResultsImage.setAttribute('src', 'assets/image/anthony.jpg');
+        //     noResultsImage.setAttribute('alt', 'Aucune recette trouvée');
+        //     noResultsImage.classList.add('anthoImg');
 
-            recipesContainer.appendChild(noResultsImage);
-        } else {
+        //     recipesContainer.appendChild(noResultsImage);
+        // } else {
 
-            recipes.forEach(recipeData => {
+                recipes.forEach(recipeData => {
                 const recipe = new Recipe(recipeData);
                 const recipeElement = recipe.getHtml();
                 recipesContainer.appendChild(recipeElement);
             });
-        }
 
         this.updateRecipeCount(recipes.length);
+
     }
 
     filterRecipes = (searchTerm, recipes) => {
@@ -384,17 +385,9 @@ export class Recipe {
         this.displayRecipes(filteredRecipes);
     };
 
-    applyAllFilters = (recipes = null) => {
-        if (!recipes) {
-            recipes = this.recipesData;
-        }
+    applyAllFilters = (recipes) => {
     
-        console.log("Applying filters...");
-        console.log("Active Ingredient Filters:", this.activeIngredientFilters);
-        console.log("Active Appliance Filters:", this.activeApplianceFilters);
-        console.log("Active Ustensil Filters:", this.activeUstensilFilters);
-    
-        let filteredRecipes; 
+        let filteredRecipes = []; 
     
         if (
             this.activeIngredientFilters.length === 0 &&
@@ -402,6 +395,7 @@ export class Recipe {
             this.activeUstensilFilters.length === 0
         ) {
             filteredRecipes = recipes;
+
         } else {
             filteredRecipes = recipes.filter(recipe => {
                 const matchesIngredients = this.activeIngredientFilters.length === 0 ||
