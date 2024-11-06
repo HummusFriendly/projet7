@@ -112,7 +112,7 @@ header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 70px;
-    margin-top: 100px;
+    margin-top: 30px;
     background-color: rgb(241, 236, 236);
     margin-left: 5%;
     margin-right: 5%;
@@ -237,4 +237,21 @@ p {
 
 .ingredient-search {
     width: 100%;
+}
+
+.keyword {
+    display: flex;
+    gap: 10px;
+    margin-left: 70px;
+    margin-top: 10px;
+}
+.keyword-item {
+    background-color: #FFD15B;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.remove-keyword {
+    font-size: 1.2em;
+    cursor: pointer;
 }

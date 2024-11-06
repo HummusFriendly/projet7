@@ -414,15 +414,49 @@ export class Recipe {
         searchButton.addEventListener('click', () => {
             const searchTerm = inputField.value.toLowerCase();
     
+            this.activeIngredientFilters = [];
+            this.activeApplianceFilters = [];
+            this.activeUstensilFilters = [];
+    
             if (searchTerm.length >= 3) {
-                this.activeIngredientFilters.push(searchTerm);
-            } else {
-                this.activeIngredientFilters = [];
+                let isIngredient = false;
+                let isAppliance = false;
+                let isUstensil = false;
+    
+                recipesData.forEach(recipe => {
+                    recipe.ingredients.forEach(ingredient => {
+                        if (ingredient.ingredient.toLowerCase().includes(searchTerm)) {
+                            isIngredient = true;
+                        }
+                    });
+    
+                    if (recipe.appliance && recipe.appliance.toLowerCase().includes(searchTerm)) {
+                        isAppliance = true;
+                    }
+    
+                    recipe.ustensils.forEach(ustensil => {
+                        if (ustensil.toLowerCase().includes(searchTerm)) {
+                            isUstensil = true;
+                        }
+                    });
+                });
+    
+                if (isIngredient) {
+                    this.activeIngredientFilters.push(searchTerm);
+                }
+                if (isAppliance) {
+                    this.activeApplianceFilters.push(searchTerm);
+                }
+                if (isUstensil) {
+                    this.activeUstensilFilters.push(searchTerm);
+                }
             }
+    
             this.applyAllFilters(recipesData);
-            this.updateKeywordsDisplay(recipesData); 
+            this.updateKeywordsDisplay(recipesData);
         });
     };
+    
 }
 
 
