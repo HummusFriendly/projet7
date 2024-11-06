@@ -14,7 +14,7 @@ export class Recipe {
         this.activeUstensilFilters = [];
     }
 
-    updateKeywordsDisplay = () => {
+    updateKeywordsDisplay = (recipesData) => {
         const keywordContainer = document.querySelector('.keyword');
         keywordContainer.innerHTML = ''; 
     
@@ -31,25 +31,21 @@ export class Recipe {
                 const index = filterArray.indexOf(keyword);
                 if (index !== -1) {
                     filterArray.splice(index, 1);
-                    console.log("ici", filterArray)
-
                     console.log("Keyword removed:", keyword); 
-                    console.log("Current ingredient filters:", this.activeIngredientFilters);
-                    console.log("Current appliance filters:", this.activeApplianceFilters);
-                    console.log("Current ustensil filters:", this.activeUstensilFilters);
-                    this.applyAllFilters(this.recipesData);
-                    this.updateKeywordsDisplay();
+                    this.applyAllFilters(recipesData); 
+                    this.updateKeywordsDisplay(recipesData); 
                 }
             });
     
             keywordDiv.appendChild(removeButton);
             keywordContainer.appendChild(keywordDiv);
         };
-
+    
         this.activeIngredientFilters.forEach(keyword => addKeyword(keyword, this.activeIngredientFilters));
         this.activeApplianceFilters.forEach(keyword => addKeyword(keyword, this.activeApplianceFilters));
         this.activeUstensilFilters.forEach(keyword => addKeyword(keyword, this.activeUstensilFilters));
     };
+    
     
     
 
@@ -172,7 +168,7 @@ export class Recipe {
                     this.activeIngredientFilters.push(ingredient);
                 }
                 this.applyAllFilters(recipes);
-                this.updateKeywordsDisplay();
+                this.updateKeywordsDisplay(recipes);
                 ingredientsContainer.style.display = 'none';
             });
 
@@ -237,7 +233,7 @@ export class Recipe {
                     this.activeApplianceFilters.push(appliance);
                 }
                 this.applyAllFilters(recipes);
-                this.updateKeywordsDisplay();
+                this.updateKeywordsDisplay(recipes);
                 appardContainer.style.display = 'none';
             });
 
@@ -300,7 +296,7 @@ export class Recipe {
                     this.activeUstensilFilters.push(ustensil);
                 }
                 this.applyAllFilters(recipes);
-                this.updateKeywordsDisplay();
+                this.updateKeywordsDisplay(recipes);
                 ustenContainer.style.display = 'none';
             });
 
@@ -341,22 +337,7 @@ export class Recipe {
     displayRecipes = (recipes) => {
         const recipesContainer = document.querySelector('.plats');
 
-        // if (!recipesContainer) {
-        //     console.error("'.plats' n'a pas été trouvé.");
-        //     return;
-        // }
-
         recipesContainer.innerHTML = '';
-
-        // if (recipes.length === 0) {
-
-        //     const noResultsImage = document.createElement('img');
-        //     noResultsImage.setAttribute('src', 'assets/image/anthony.jpg');
-        //     noResultsImage.setAttribute('alt', 'Aucune recette trouvée');
-        //     noResultsImage.classList.add('anthoImg');
-
-        //     recipesContainer.appendChild(noResultsImage);
-        // } else {
 
                 recipes.forEach(recipeData => {
                 const recipe = new Recipe(recipeData);
@@ -385,19 +366,22 @@ export class Recipe {
         this.displayRecipes(filteredRecipes);
     };
 
-    applyAllFilters = (recipes) => {
+    applyAllFilters = (recipesData) => {
+        if (!recipesData) {
+            console.error("recipesData is undefined in applyAllFilters.");
+            return;
+        }
     
-        let filteredRecipes = []; 
+        let filteredRecipes = [];
     
         if (
             this.activeIngredientFilters.length === 0 &&
             this.activeApplianceFilters.length === 0 &&
             this.activeUstensilFilters.length === 0
         ) {
-            filteredRecipes = recipes;
-
+            filteredRecipes = recipesData;
         } else {
-            filteredRecipes = recipes.filter(recipe => {
+            filteredRecipes = recipesData.filter(recipe => {
                 const matchesIngredients = this.activeIngredientFilters.length === 0 ||
                     this.activeIngredientFilters.every(ingredient =>
                         recipe.ingredients.some(ing => ing.ingredient.toLowerCase() === ingredient)
@@ -420,6 +404,7 @@ export class Recipe {
     };
     
     
+    
 
 
     initSearch = (recipesData) => {
@@ -435,9 +420,9 @@ export class Recipe {
                 this.activeIngredientFilters = [];
             }
             this.applyAllFilters(recipesData);
-            this.updateKeywordsDisplay();
+            this.updateKeywordsDisplay(recipesData); 
         });
-    }
+    };
 }
 
 
