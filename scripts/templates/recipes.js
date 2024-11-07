@@ -16,38 +16,38 @@ export class Recipe {
 
     updateKeywordsDisplay = (recipesData) => {
         const keywordContainer = document.querySelector('.keyword');
-        keywordContainer.innerHTML = ''; 
-    
+        keywordContainer.innerHTML = '';
+
         const addKeyword = (keyword, filterArray) => {
             const keywordDiv = document.createElement('div');
             keywordDiv.classList.add('keyword-item');
             keywordDiv.textContent = `${keyword} `;
-    
+
             const removeButton = document.createElement('span');
             removeButton.classList.add('remove-keyword');
             removeButton.textContent = 'x';
-    
+
             removeButton.addEventListener('click', () => {
                 const index = filterArray.indexOf(keyword);
                 if (index !== -1) {
                     filterArray.splice(index, 1);
-                    console.log("Keyword removed:", keyword); 
-                    this.applyAllFilters(recipesData); 
-                    this.updateKeywordsDisplay(recipesData); 
+                    console.log("Keyword removed:", keyword);
+                    this.applyAllFilters(recipesData);
+                    this.updateKeywordsDisplay(recipesData);
                 }
             });
-    
+
             keywordDiv.appendChild(removeButton);
             keywordContainer.appendChild(keywordDiv);
         };
-    
+
         this.activeIngredientFilters.forEach(keyword => addKeyword(keyword, this.activeIngredientFilters));
         this.activeApplianceFilters.forEach(keyword => addKeyword(keyword, this.activeApplianceFilters));
         this.activeUstensilFilters.forEach(keyword => addKeyword(keyword, this.activeUstensilFilters));
     };
-    
-    
-    
+
+
+
 
     updateRecipeCount = (count) => {
         const numberButton = document.querySelector('.numberbutton');
@@ -339,11 +339,11 @@ export class Recipe {
 
         recipesContainer.innerHTML = '';
 
-                recipes.forEach(recipeData => {
-                const recipe = new Recipe(recipeData);
-                const recipeElement = recipe.getHtml();
-                recipesContainer.appendChild(recipeElement);
-            });
+        recipes.forEach(recipeData => {
+            const recipe = new Recipe(recipeData);
+            const recipeElement = recipe.getHtml();
+            recipesContainer.appendChild(recipeElement);
+        });
 
         this.updateRecipeCount(recipes.length);
 
@@ -351,7 +351,7 @@ export class Recipe {
 
     filterRecipes = (searchTerm, recipes) => {
         const searchLowerCase = searchTerm.toLowerCase();
-    
+
         const filteredRecipes = recipes.filter(recipe => {
             const nameMatch = recipe.name.toLowerCase().includes(searchLowerCase);
             const ingredientsMatch = recipe.ingredients.some(ingredient =>
@@ -359,10 +359,10 @@ export class Recipe {
             );
             const applianceMatch = recipe.appliance && recipe.appliance.toLowerCase().includes(searchLowerCase);
             const ustensilsMatch = recipe.ustensils && recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(searchLowerCase));
-    
+
             return nameMatch || ingredientsMatch || applianceMatch || ustensilsMatch;
         });
-    
+
         this.displayRecipes(filteredRecipes);
     };
 
@@ -371,9 +371,9 @@ export class Recipe {
             console.error("recipesData is undefined in applyAllFilters.");
             return;
         }
-    
+
         let filteredRecipes = [];
-    
+
         if (
             this.activeIngredientFilters.length === 0 &&
             this.activeApplianceFilters.length === 0 &&
@@ -386,61 +386,61 @@ export class Recipe {
                     this.activeIngredientFilters.every(ingredient =>
                         recipe.ingredients.some(ing => ing.ingredient.toLowerCase() === ingredient)
                     );
-    
+
                 const matchesAppliance = this.activeApplianceFilters.length === 0 ||
                     this.activeApplianceFilters.includes(recipe.appliance.toLowerCase());
-    
+
                 const matchesUstensils = this.activeUstensilFilters.length === 0 ||
                     this.activeUstensilFilters.every(ustensil =>
                         recipe.ustensils.some(u => u.toLowerCase() === ustensil)
                     );
-    
+
                 return matchesIngredients && matchesAppliance && matchesUstensils;
             });
         }
-    
+
         this.displayRecipes(filteredRecipes);
         console.log("Filtered Recipes Count:", filteredRecipes.length);
     };
-    
-    
-    
+
+
+
 
 
     initSearch = (recipesData) => {
         const inputField = document.querySelector('.lookingfor_input');
         const searchButton = document.querySelector('.lookingfor_button');
-    
+
         searchButton.addEventListener('click', () => {
             const searchTerm = inputField.value.toLowerCase();
-    
+
             this.activeIngredientFilters = [];
             this.activeApplianceFilters = [];
             this.activeUstensilFilters = [];
-    
+
             if (searchTerm.length >= 3) {
                 let isIngredient = false;
                 let isAppliance = false;
                 let isUstensil = false;
-    
+
                 recipesData.forEach(recipe => {
                     recipe.ingredients.forEach(ingredient => {
                         if (ingredient.ingredient.toLowerCase().includes(searchTerm)) {
                             isIngredient = true;
                         }
                     });
-    
+
                     if (recipe.appliance && recipe.appliance.toLowerCase().includes(searchTerm)) {
                         isAppliance = true;
                     }
-    
+
                     recipe.ustensils.forEach(ustensil => {
                         if (ustensil.toLowerCase().includes(searchTerm)) {
                             isUstensil = true;
                         }
                     });
                 });
-    
+
                 if (isIngredient) {
                     this.activeIngredientFilters.push(searchTerm);
                 }
@@ -451,12 +451,12 @@ export class Recipe {
                     this.activeUstensilFilters.push(searchTerm);
                 }
             }
-    
+
             this.applyAllFilters(recipesData);
             this.updateKeywordsDisplay(recipesData);
         });
     };
-    
+
 }
 
 
